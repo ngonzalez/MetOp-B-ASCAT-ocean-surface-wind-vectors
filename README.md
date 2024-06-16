@@ -13,3 +13,7 @@ docker build . -t ocean-surface-wind-vectors \
 ```shell
 docker run --rm -it -v /data:/mnt/data ocean-surface-wind-vectors
 ```
+
+Data available at Nasa Earthdata:
+
+[earthdata.nasa.gov](https://cmr.earthdata.nasa.gov/search/concepts/C2075141559-POCLOUD.html)
