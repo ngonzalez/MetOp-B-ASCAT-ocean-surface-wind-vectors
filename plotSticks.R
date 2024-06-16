@@ -34,19 +34,21 @@ for (file in fnames) {
     count <- size
     count[ndims] <- 1
 
+    # basemap(89.6, -180.0, -89.6, 180.0)
+
     lat <- ncvar_get(nc, varid = 'lat', start = start, count = count)
     lon <- ncvar_get(nc, varid = 'lon', start = start, count = count)
 
     wind_speed <- ncvar_get(nc, varid = 'wind_speed', start = start, count = count)
+    nc_attributes <- ncatt_get(nc, varid = 'wind_speed')
   
     sinSpeed <- sin(wind_speed)
     cosSpeed <- cos(wind_speed)
 
-    plotSticks(lon, lat, sinSpeed, cosSpeed, add = i>1)
-  }
+    plotSticks(lon, lat, sinSpeed, cosSpeed)
 
-  nc_attributes <- ncatt_get(nc, varid = 'wind_speed')
-  mtext(paste(nc_attributes$long_name, nc_attributes$units), side = 2)
+    mtext(paste(nc_attributes$long_name, nc_attributes$units), side = 3)
+  }
 
   dev.off()
 }
