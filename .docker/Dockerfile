@@ -14,7 +14,7 @@ WORKDIR /r
 ARG netcdf_path="/mnt/data/netcdf"
 ENV NETCDF_PATH $netcdf_path
 
-COPY ../displayData.R .
+COPY ../plotSticks.R .
 
 ENTRYPOINT []
 CMD ["/usr/bin/entrypoint.sh", "--process"]
