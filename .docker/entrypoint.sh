@@ -5,8 +5,14 @@ function usage {
     echo "usage: entrypoint.sh [--process|--help]"
 }
 
+declare -a StringArray=(
+  "wind_speed"
+)
+
 function plotSticks {
-  su -c "Rscript /r/plotSticks.R" $USER
+  for val in ${StringArray[@]}; do
+    su -c "Rscript /r/plotSticks.R $val" $USER
+  done
 }
 
 if [ "$1" != "" ]; then

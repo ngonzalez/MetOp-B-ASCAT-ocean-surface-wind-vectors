@@ -4,22 +4,34 @@ install.packages(setdiff(packages, rownames(installed.packages())))
 library(ncdf4)
 library(oce)
 
+if (length(commandArgs(trailingOnly=TRUE))>0) {
+  args <- commandArgs(trailingOnly=TRUE)
+  selected <- args[1]
+} else {
+  stop("Missing selected variable argument", call.=FALSE)
+}
+
 setwd(Sys.getenv('NETCDF_PATH'))
 
 fnames <- list.files(pattern = "*.nc$", all.files = FALSE)
 
 for (file in fnames) {
+
   nc <- nc_open(file)
 
-  v <- nc$var$time
-  size <- v$size
-  ndims <- v$ndims
-  nt  <- size[ndims]
+  # selected
+  nc_vars <- names(nc$var)
+  variable <- grep(selected, nc_vars, value=TRUE)
 
-  filename <- paste(file, ".pdf")
+  # variables
+  time    <- nc$var$time
+  size    <- time$size
+  ndims   <- time$ndims
+  nt      <- size[ndims]
+
+  filename <- paste(file, variable, ".pdf")
   pdf(file=filename)
 
-  i <- 1
   for (i in 1:nt) {
     start <- rep(1, ndims)
     start[ndims] <- i
@@ -27,16 +39,14 @@ for (file in fnames) {
     count <- size
     count[ndims] <- 1
 
-    # basemap(89.6, -180.0, -89.6, 180.0)
-
     lat <- ncvar_get(nc, varid = 'lat', start = start, count = count)
     lon <- ncvar_get(nc, varid = 'lon', start = start, count = count)
 
-    wind_speed <- ncvar_get(nc, varid = 'wind_speed', start = start, count = count)
-    nc_attributes <- ncatt_get(nc, varid = 'wind_speed')
+    values <- ncvar_get(nc, varid = variable, start = start, count = count)
+    nc_attributes <- ncatt_get(nc, varid = variable)
   
-    sinSpeed <- sin(wind_speed)
-    cosSpeed <- cos(wind_speed)
+    sinSpeed <- sin(values)
+    cosSpeed <- cos(values)
 
     plotSticks(lon, lat, sinSpeed, cosSpeed)
 
