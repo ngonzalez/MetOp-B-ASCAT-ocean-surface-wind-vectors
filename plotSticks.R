@@ -4,13 +4,6 @@ install.packages(setdiff(packages, rownames(installed.packages())))
 library(ncdf4)
 library(oce)
 
-if (length(commandArgs(trailingOnly=TRUE))>0) {
-  args <- commandArgs(trailingOnly=TRUE)
-  selected <- args[1]
-} else {
-  stop("NETCDF_PATH is missing", call.=FALSE)
-}
-
 setwd(Sys.getenv('NETCDF_PATH'))
 
 fnames <- list.files(pattern = "*.nc$", all.files = FALSE)
