@@ -1,7 +1,7 @@
 ##### Process NetCDF Data
 
 ```shell
-export NETCDF_PATH=/mnt/data/netcdf
+export NETCDF_PATH=/tmp/data/netcdf
 ```
 
 ```shell
@@ -11,7 +11,7 @@ docker build . -t ocean-surface-wind-vectors \
 ```
 
 ```shell
-docker run --rm -it -v /data:/mnt/data ocean-surface-wind-vectors
+docker run --rm -it -v /tmp/data:/tmp/data ocean-surface-wind-vectors
 ```
 
 Data available at Nasa Earthdata:
